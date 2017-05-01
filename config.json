@@ -1,0 +1,33 @@
+{
+  "pageTitle": "Application Landscape",
+  "backgroundColor": "#FFF",
+  "slideConfig": {
+    "slideInterval": 3000
+  },
+  "maxHops": 5,
+  "slideUrls": [
+    {
+      "url": "graphEditor"
+    },
+    {
+      "url": "graphBrowser"
+    }
+  ],
+  "neo4jConfig": {
+    "serverUrl": "localhost:7474  ",
+    "user": "nielsn",
+    "password": "mimi8798"
+  },
+  "graphConfig": {
+    "minNodeSize": 5,
+    "maxNodeSize": 15,
+    "nodeSizeFactor": 5,
+    "nodeLabelFontColor": "#000",
+    "labelHoverBGColor": "node",
+    "nodeLabelFontSize": 10,
+    "nodeBorderSize": 1,
+    "nodeBorderColor": "#999",
+    "edgeHoverLabelBGColor": "#B956AF"
+  },
+  "micaUrl": ""
+}
