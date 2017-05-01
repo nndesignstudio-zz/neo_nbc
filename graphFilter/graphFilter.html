@@ -1,0 +1,48 @@
+<md-toolbar>
+  <div class="left-sidebar background-color-primary">
+    <div class="pull-left"><h1 class="md-toolbar-tools">Refine Results By</h1></div>
+    <div class="pull-right">
+      <div class="md-accent md-toolbar-tools cursor-pointer" ng-click="toggleLeft()"><i class="fa fa-angle-double-left" aria-hidden="true"></i></div>
+    </div>
+  </div>
+</md-toolbar>
+
+<md-content layout-margin>
+  <form id="search-form" name="searchForm" novalidate role="form">
+    <accordion>
+      <accordion-group ng-repeat="(key, value) in searchMaster" is-open="value.open">
+        <accordion-heading>
+          <div class="cursor-pointer clearfix accordian-label">
+            <span class="pull-left accordian-label-checkbox"><input ng-attr-id="{{key}}" ng-checked="selectedLabels[key]" ng-click="updateGraph($event, key)" type="checkbox" name="group"></span>
+            <div class="pull-left accordian-label-text">{{key}}<i class="pull-right fa" ng-class="{'fa-angle-right': !value.open, 'fa-angle-down': value.open}"></i></div>
+          </div>
+        </accordion-heading>
+        <div ng-if="valueProp.searchable !=false" layout-gt-sm="row" ng-repeat="(keyProp, valueProp) in value.properties">
+          <md-autocomplete flex
+                           md-input-name="autocompleteField[keyProp]"
+                           md-no-cache="noCache"
+                           md-selected-item="selectedItem[key][keyProp]"
+                           md-search-text="searchText[keyProp]"
+                           md-items="item in loadValuesByProperty(searchText[keyProp], keyProp, key)"
+                           md-item-text="item"
+                           md-floating-label="{{valueProp.displayName}}">
+            <md-item-template>
+              <span md-highlight-text="searchText[key]">{{item}}</span>
+            </md-item-template>
+            <md-not-found>
+              No items matching "{{searchText[keyProp]}}" were found.
+            </md-not-found>
+            <div ng-messages="searchForm.autocompleteField[valueProp].$error" ng-if="searchForm.autocompleteField[valueProp].$touched">
+            </div>
+          </md-autocomplete>
+        </div>
+      </accordion-group>
+    </accordion>
+
+    <div>
+      <md-button class="md-raised md-primary background-color-primary md-button md-ink-ripple" type="submit" ng-click="searchInGraph();toggleLeft();">Search</md-button>
+      <md-button class="md-raised" type="submit" ng-click="resetGraph();toggleLeft();">Reset</md-button>
+    </div>
+
+  </form>
+</md-content>

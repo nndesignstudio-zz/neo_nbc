@@ -1,0 +1,35 @@
+<md-dialog aria-label="relation" cg-busy="{promise:uploadPromise,message:'Please wait...'}">
+    <md-toolbar>
+      <div class="md-toolbar-tools background-color-primary">
+        <h2></h2>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <form name="editNodeForm" role="form" novalidate>
+            <md-input-container ng-repeat="(key, value) in propertyList">
+              <label>{{value.displayName}}</label>
+              <input name="{{key}}" ng-model="propertyValues[key]"
+                     ng-pattern="value.restriction" ng-required="value.required">
+              <div ng-messages="editNodeForm[key].$error">
+                <div ng-message="required">This is required.</div>
+                <div ng-message="pattern" class="my-message">Invalid Data type!</div>
+              </div>
+            </md-input-container>
+        </form>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <md-button ng-click="closeDialog()" class="md-raised">
+        CANCEL
+      </md-button>
+     <!-- <md-button ng-show="editMode" ng-click="deleteNode()">
+        Delete
+      </md-button>-->
+      <md-button ng-click="saveRelation()" ng-disabled="!editNodeForm.$valid" class="md-raised md-primary background-color-primary md-button md-ink-ripple">
+        <span ng-show="editMode == true">Update</span><span ng-show="editMode == false">Save</span>
+      </md-button>
+    </md-dialog-actions>
+</md-dialog>

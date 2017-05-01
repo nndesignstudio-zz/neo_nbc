@@ -1,0 +1,70 @@
+<div id="nbc-graph-editor">
+  <section layout="row" flex>
+    <md-sidenav class="md-sidenav-left" md-component-id="filter" md-whiteframe="4" md-enable-backdrop>
+      <div ng-controller="graphFilterCtrl"><ng-include src="'app/graphFilter/graphFilter.html'"></ng-include></div>
+    </md-sidenav>
+
+
+
+    <md-sidenav class="md-sidenav-left" md-component-id="editor" md-whiteframe="4" md-disable-backdrop>
+      <md-toolbar>
+        <div class="left-sidebar background-color-primary">
+          <div class="pull-left"><h1 class="md-toolbar-tools">Drag Node to Add</h1></div>
+          <div class="pull-right">
+            <div class="md-accent md-toolbar-tools cursor-pointer" ng-click="toggleEditor()"><i class="fa fa-angle-double-left" aria-hidden="true"></i></div>
+          </div>
+        </div>
+      </md-toolbar>
+
+      <ul layout-margin dnd-list="nodeLabels" dnd-drop="addNodeToGraph(event, index, key, external, type, 'notAllowed')" class="list-group neo4j-labels">
+        <li ng-style="getNodeStyle(key)" class="list-group-item node-label" ng-repeat="(key, value) in nodeLabels track by $index"
+            dnd-draggable="key"
+            dnd-moved="nodeLabels.splice($index, 1)"
+            dnd-effect-allowed="copy"
+          >
+          <img ng-if="getBackgroundIcon(key)" src="{{getBackgroundIcon(key)}}" class="img-circle" alt="Cinque Terre" width="70" height="70">
+          <div ng-class="{'no-icon-title': !getBackgroundIcon(key), 'icon-title': getBackgroundIcon(key)}" class="node-label-title"><strong>{{value._default.displayName}} </strong></div></img>
+        </li>
+      </ul>
+    </md-sidenav>
+
+
+    <md-content flex>
+      <div class="neo4j-toggle-left">
+        <md-button ng-click="toggleLeft()" class="md-raised md-primary background-color-primary">
+        <i class="fa fa-search" aria-hidden="true"></i> Filter
+      </md-button>
+      <md-button ng-click="toggleEditor()" class="md-raised md-primary background-color-primary">
+        <i class="fa fa-plus" aria-hidden="true"></i> Node
+      </md-button>
+      </div>
+      <div class="nbc-graph-edit" dnd-list dnd-drop="addNodeToGraph(event, index, item, external, type, 'allowed')">
+        <div class="facet-wrapper pull-right">
+          <span ng-repeat="(Skey, Svalue) in masterQuery" class="search-level-1">
+            <span class="facet search-level-2" ng-attr-id="{{Lkey}}-{{Skey}}" ng-repeat="(Lkey, Lvalue) in Svalue.data" ng-class="getPillStyle(Lkey, Skey)">
+              <div class="filter-tag term-pill" ng-repeat="(key, value) in Lvalue" ng-if="value!=null">
+                <span class="pill-header cursor-pointer" ng-click="removeFilter(Skey, Lkey, key)"><i class="fa fa-times" aria-hidden="true"></i> Filter:</span>
+                <div class="term">{{Lkey}}:{{value}}</div>
+              </div>
+            </span>
+          </span>
+        </div>
+        <div class="graph-refresh">
+          <span class="fa fa-refresh" aria-hidden="true" ng-click="resetGraph()"></span>
+          <!--<button ng-click="resetGraph()" class="md-raised md-primary background-color-primary md-button md-ink-ripple">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+          </button>-->
+        </div>
+        <div ng-if="loggedIn == true" class="graph-logout cursor-pointer" ng-click="logOutSession()">
+          <span class="fa fa-sign-in" aria-hidden="true" name="sign-in"></span>
+          <!--<button ng-click="logout()" aria-hidden="true" class="fa fa-sign-in md-raised md-button md-ink-ripple">
+          </button>-->
+        </div>
+        <div ng-if="pageTitle != ''" class="page-title">{{pageTitle}}</div>
+        <graph></graph>
+      </div>
+    </md-content>
+
+  </section>
+
+</div>
